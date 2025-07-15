@@ -1,6 +1,6 @@
 # {{SERVICE_NAME}}/cmd/main.py.tpl
 """
-Entry‑point matching Go's main.go:
+Entry‑point:
 
 * Boots FastAPI
 * Connects DB

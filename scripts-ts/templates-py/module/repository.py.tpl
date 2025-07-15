@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from .model import {{MODULE_NAME_UPPER}}
 
 class Repository:
-    """Thin SQLAlchemy wrapper that mirrors the Go gormRepo API."""
+    """Thin SQLAlchemy wrapper."""
 
     def __init__(self, db: Session) -> None:
         self.db = db
