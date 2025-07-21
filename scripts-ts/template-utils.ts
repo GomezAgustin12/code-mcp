@@ -19,9 +19,14 @@ export function renderTemplate(
 export function writeTemplate(
   templateName: string,
   destPath: string,
-  variables: Record<string, string>
+  variables: Record<string, string>,
+  language: string = "go"
 ) {
-  const templatePath = path.join(__dirname, "templates", templateName);
+  const templatePath = path.join(
+    __dirname,
+    `templates-${language}`,
+    templateName
+  );
   const rendered = renderTemplate(templatePath, variables);
   fs.mkdirSync(path.dirname(destPath), { recursive: true });
   fs.writeFileSync(destPath, rendered);
@@ -32,10 +37,11 @@ export function writeMultipleTemplates(
     templateName: string;
     destPath: string;
     variables: Record<string, string>;
-  }>
+  }>,
+  language: string = "go"
 ) {
   for (const { templateName, destPath, variables } of templates) {
-    writeTemplate(templateName, destPath, variables);
+    writeTemplate(templateName, destPath, variables, language);
   }
 }
 

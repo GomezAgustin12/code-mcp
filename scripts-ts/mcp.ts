@@ -18,12 +18,17 @@ server.tool(
       .string()
       .default(process.cwd())
       .describe("Working directory for the service creation"),
+    language: z
+      .enum(["go", "py"])
+      .default("go")
+      .describe("Programming language for the service (default: go)"),
   },
-  async ({ serviceName, cwd }) => {
+  async ({ serviceName, cwd, language }) => {
     // For MCP tools, input is usually on extra.data or extra.arguments
     await createService({
       serviceName,
       cwd,
+      language,
     });
     return {
       content: [

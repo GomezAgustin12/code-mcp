@@ -6,9 +6,11 @@ import { writeMultipleTemplates, mkdirs } from "./template-utils";
 export async function createService({
   serviceName,
   cwd = process.cwd(),
+  language = "go",
 }: {
   serviceName: string;
   cwd?: string;
+  language?: string;
 }) {
   function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -18,8 +20,10 @@ export async function createService({
   fs.mkdirSync(serviceDir);
   process.chdir(serviceDir);
 
+  const goDirectories = ["cmd", "internal/config", "diagrams"];
+
   // Create directories
-  mkdirs(["cmd", "internal/config", "diagrams"]);
+  mkdirs(goDirectories);
 
   // Generate files from templates
   writeMultipleTemplates([
