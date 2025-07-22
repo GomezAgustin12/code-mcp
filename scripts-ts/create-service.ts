@@ -20,29 +20,15 @@ export async function createService({
   fs.mkdirSync(serviceDir);
   process.chdir(serviceDir);
 
-  const goDirectories = ["cmd", "internal/config", "diagrams"];
+  const { directories, files } = await import(
+    `./language-config/${language}.json`
+  );
 
   // Create directories
-  mkdirs(goDirectories);
+  mkdirs(directories);
 
   // Generate files from templates
-  writeMultipleTemplates([
-    {
-      templateName: "service/env.tpl",
-      destPath: ".env",
-      variables: { SERVICE_NAME: serviceName },
-    },
-    {
-      templateName: "service/config.go.tpl",
-      destPath: "internal/config/config.go",
-      variables: { SERVICE_NAME: serviceName },
-    },
-    {
-      templateName: "service/main.go.tpl",
-      destPath: "cmd/main.go",
-      variables: { SERVICE_NAME: serviceName },
-    },
-  ]);
+  writeMultipleTemplates(files);
 
   // go.mod and dependencies
   // execSync(`go mod init ${serviceName}`, { stdio: "inherit" });
