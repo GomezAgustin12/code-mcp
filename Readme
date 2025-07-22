@@ -1,0 +1,65 @@
+# MC Project
+
+A modular microservice project template supporting Go, Python, and TypeScript. Easily scaffold new services and modules with built-in scripts and templates.
+
+## Features
+
+- Multi-language support: Go, Python, TypeScript
+- Service and module generators (`scripts-ts/`, `scripts/`)
+- Pre-configured directory structure for microservices
+- Built-in Swagger/OpenAPI documentation
+- Docker and database setup scripts
+- Mermaid diagrams for architecture and flows
+
+## Getting Started
+
+1. **Clone the repository**
+   ```zsh
+git clone <your-repo-url>
+cd mc-project
+```
+
+2. **Create a new service**
+   ```zsh
+cd scripts-ts
+npx ts-node create-service.ts --serviceName=my-service --language=go
+```
+
+3. **Create a new module**
+   ```zsh
+cd scripts-ts
+npx ts-node create-module.ts --moduleName=my-module --language=go
+```
+
+4. **Run your service**
+   - For Go:  
+     ```zsh
+     cd my-service/cmd
+     go run main.go
+     ```
+
+## Directory Structure
+
+- `catalog/`, `product/`: Example microservices
+- `scripts/`, `scripts-ts/`: Service/module generators and utilities
+- `templates-go/`, `templates-py/`, `templates-ts/`: Language-specific templates
+- `diagrams/`: Architecture diagrams (Mermaid)
+- `docs/`: Swagger/OpenAPI documentation
+
+## Database
+
+- Local PostgreSQL or Docker support
+- Migration scripts in `db/migrations/`
+
+## Documentation
+
+- Swagger docs generated in `docs/swagger/`
+- Mermaid diagrams in `diagrams/`
+
+## Contributing
+
+Pull requests are welcome! See `PULL_REQUEST_TEMPLATE.md` for guidelines.
+
+## License
+
+See `LICENSE` for details.
