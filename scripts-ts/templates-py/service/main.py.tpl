@@ -1,3 +1,5 @@
+# Template-Destination: main.py
+# Template-Variables: SERVICE_NAME
 # {{SERVICE_NAME}}/cmd/main.py.tpl
 """
 Entry‑point:

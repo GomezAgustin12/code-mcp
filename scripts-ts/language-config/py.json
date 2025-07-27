@@ -1,0 +1,52 @@
+{
+  "directories": [
+    "internal/config",
+    "internal/database"
+  ],
+  "files": [
+    {
+      "templateName": "service/.dockerignore.tpl",
+      "destPath": ".dockerignore",
+      "variables": {}
+    },
+    {
+      "templateName": "service/.env.tpl",
+      "destPath": ".env",
+      "variables": {
+        "SERVICE_NAME": "service_name"
+      }
+    },
+    {
+      "templateName": "service/Dockerfile.tpl",
+      "destPath": "Dockerfile",
+      "variables": {}
+    },
+    {
+      "templateName": "service/config.py.tpl",
+      "destPath": "internal/config/config.py",
+      "variables": {
+        "SERVICE_NAME": "service_name"
+      }
+    },
+    {
+      "templateName": "service/database.py.tpl",
+      "destPath": "internal/database/database.py",
+      "variables": {}
+    },
+    {
+      "templateName": "service/docker-compose.yml.tpl",
+      "destPath": "docker-compose.yml",
+      "variables": {}
+    },
+    {
+      "templateName": "service/main.py.tpl",
+      "destPath": "main.py",
+      "variables": {}
+    },
+    {
+      "templateName": "service/requirements.txt.tpl",
+      "destPath": "requirements.txt",
+      "variables": {}
+    }
+  ]
+}

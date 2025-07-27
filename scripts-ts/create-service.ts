@@ -1,16 +1,19 @@
 import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
-import { writeMultipleTemplates, mkdirs } from "./template-utils";
+import { writeMultipleTemplates, mkdirs, writeTemplatesFromConfig } from "./template-utils";
+import { getTemplateConfig } from "./template-discovery";
 
 export async function createService({
   serviceName,
   cwd = process.cwd(),
   language = "go",
+  useDiscovery = true,
 }: {
   serviceName: string;
   cwd?: string;
   language?: string;
+  useDiscovery?: boolean;
 }) {
   function capitalize(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -20,15 +23,27 @@ export async function createService({
   fs.mkdirSync(serviceDir);
   process.chdir(serviceDir);
 
-  const { directories, files } = await import(
-    `./language-config/${language}.json`
-  );
+  if (useDiscovery) {
+    // Use new template discovery system
+    const config = getTemplateConfig(language, "service");
+    const variables = {
+      SERVICE_NAME: serviceName,
+      serviceName: serviceName,
+    };
+    
+    writeTemplatesFromConfig(config, variables, language);
+  } else {
+    // Fallback to old system for backward compatibility
+    const { directories, files } = await import(
+      `./language-config/${language}.json`
+    );
 
-  // Create directories
-  mkdirs(directories);
+    // Create directories
+    mkdirs(directories);
 
-  // Generate files from templates
-  writeMultipleTemplates(files);
+    // Generate files from templates
+    writeMultipleTemplates(files);
+  }
 
   // go.mod and dependencies
   // execSync(`go mod init ${serviceName}`, { stdio: "inherit" });

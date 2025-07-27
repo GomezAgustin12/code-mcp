@@ -1,3 +1,5 @@
+# Template-Destination: .env
+# Template-Variables: SERVICE_NAME
 # Database configuration
 DB_HOST=localhost
 DB_USER=postgres

@@ -1,3 +1,6 @@
+// Template-Destination: internal/config/config.go
+// Template-Variables: SERVICE_NAME
+// Template-Dependencies: internal/config
 package config
 
 import (

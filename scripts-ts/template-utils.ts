@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { getTemplateConfig, TemplateConfig } from "./template-discovery";
 
 // Polyfill __dirname for ESM compatibility
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -48,5 +49,30 @@ export function writeMultipleTemplates(
 export function mkdirs(dirs: string[]) {
   for (const dir of dirs) {
     fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+// New function to write templates using the discovery system
+export function writeTemplatesFromConfig(
+  config: TemplateConfig,
+  variables: Record<string, string>,
+  language: string = "go"
+) {
+  // Create directories first
+  mkdirs(config.directories);
+  
+  // Write files from discovered templates
+  for (const template of config.files) {
+    // Merge template variables with provided variables
+    const allVariables = { ...template.variables, ...variables };
+    
+    // Process destination path with variables
+    let destPath = template.destPath;
+    for (const [key, value] of Object.entries(allVariables)) {
+      const re = new RegExp(`{{${key}}}`, "g");
+      destPath = destPath.replace(re, value);
+    }
+    
+    writeTemplate(template.templateName, destPath, allVariables, language);
   }
 }

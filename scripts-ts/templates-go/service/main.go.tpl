@@ -1,3 +1,6 @@
+// Template-Destination: cmd/main.go
+// Template-Variables: SERVICE_NAME
+// Template-Dependencies: cmd
 package main
 
 import (

@@ -1,3 +1,5 @@
+# Template-Destination: internal/database/database.py
+# Template-Dependencies: internal/database
 # {{SERVICE_NAME}}/internal/database.py.tpl
 """Engine, session factory and FastAPI dependency."""
 

@@ -1,3 +1,5 @@
+# Template-Destination: .env
+# Template-Variables: SERVICE_NAME
 # {{SERVICE_NAME}}/.env.tpl
 # ──────── Database ────────
 DB_HOST=localhost

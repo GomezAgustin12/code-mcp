@@ -1,3 +1,6 @@
+# Template-Destination: internal/config/config.py
+# Template-Variables: SERVICE_NAME
+# Template-Dependencies: internal/config
 # {{SERVICE_NAME}}/internal/config/config.py.tpl
 """Application and DB configuration loader (dotenv‑friendly)."""
 from dataclasses import dataclass
