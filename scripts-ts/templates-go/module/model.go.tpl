@@ -1,3 +1,6 @@
+// Template-Destination: internal/{{MODULE_NAME}}/{{MODULE_NAME}}.model.go
+// Template-Variables: MODULE_NAME, MODULE_NAME_UPPER
+// Template-Dependencies: internal/{{MODULE_NAME}}
 // {{MODULE_NAME}}: MODEL 
 package {{MODULE_NAME}}
 

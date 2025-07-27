@@ -144,7 +144,7 @@ export function discoverTemplates(language: string, type: "service" | "module", 
           }
           
           // Check if this template already exists (language override)
-          const existingIndex = files.findIndex(f => f.templateName === templateName);
+          const existingIndex = files.findIndex(f => f.destPath === metadata.destPath);
           if (existingIndex >= 0 && isOverride) {
             // Replace with language-specific version
             files[existingIndex] = metadata;

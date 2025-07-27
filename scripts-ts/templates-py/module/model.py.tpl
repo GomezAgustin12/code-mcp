@@ -1,3 +1,6 @@
+# Template-Destination: internal/{{MODULE_NAME}}/{{MODULE_NAME}}.model.py
+# Template-Variables: MODULE_NAME, MODULE_NAME_UPPER
+# Template-Dependencies: internal/{{MODULE_NAME}}
 # {{MODULE_NAME}}: MODEL
 from datetime import datetime
 import uuid

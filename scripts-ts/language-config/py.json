@@ -5,9 +5,11 @@
   ],
   "files": [
     {
-      "templateName": "service/.dockerignore.tpl",
-      "destPath": ".dockerignore",
-      "variables": {}
+      "templateName": "service/README.md.tpl",
+      "destPath": "README.md",
+      "variables": {
+        "SERVICE_NAME": "service_name"
+      }
     },
     {
       "templateName": "service/.env.tpl",
@@ -15,6 +17,11 @@
       "variables": {
         "SERVICE_NAME": "service_name"
       }
+    },
+    {
+      "templateName": "service/.dockerignore.tpl",
+      "destPath": ".dockerignore",
+      "variables": {}
     },
     {
       "templateName": "service/Dockerfile.tpl",
@@ -41,7 +48,9 @@
     {
       "templateName": "service/main.py.tpl",
       "destPath": "main.py",
-      "variables": {}
+      "variables": {
+        "SERVICE_NAME": "service_name"
+      }
     },
     {
       "templateName": "service/requirements.txt.tpl",
