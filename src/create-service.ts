@@ -28,7 +28,9 @@ export async function createService({
   mkdirs(directories);
 
   // Generate files from templates
-  writeMultipleTemplates(files);
+  writeMultipleTemplates(files.service, language, {
+    SERVICE_NAME: serviceName,
+  });
 
   // go.mod and dependencies
   // execSync(`go mod init ${serviceName}`, { stdio: "inherit" });

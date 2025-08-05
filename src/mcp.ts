@@ -53,12 +53,17 @@ server.tool(
       .string()
       .default("cmd/main.go")
       .describe("Path to main.go (default: cmd/main.go)"),
+    language: z
+      .enum(["go", "py"])
+      .default("go")
+      .describe("Programming language for the module (default: go)"),
   },
-  async ({ moduleName, serviceDir, mainGoPath }) => {
+  async ({ moduleName, serviceDir, mainGoPath, language }) => {
     await createModule({
       moduleName,
       serviceDir,
       mainGoPath,
+      language: "go",
     });
     return {
       content: [

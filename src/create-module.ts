@@ -10,50 +10,43 @@ export async function createModule({
   moduleName,
   serviceDir = process.cwd(),
   mainGoPath = "cmd/main.go",
+  language = "go",
 }: {
   moduleName: string;
   serviceDir?: string;
   mainGoPath?: string;
+  language?: string;
 }) {
   const moduleDir = path.join(serviceDir, "internal", moduleName);
   fs.mkdirSync(moduleDir, { recursive: true });
   const moduleNameUpper = capitalize(moduleName);
 
   // Generate Go files from templates (now organized in subfolders)
-  writeMultipleTemplates([
-    {
-      templateName: "module/model.go.tpl",
-      destPath: path.join(moduleDir, `${moduleName}.model.go`),
-      variables: {
-        MODULE_NAME: moduleName,
-        MODULE_NAME_UPPER: moduleNameUpper,
+  writeMultipleTemplates(
+    [
+      {
+        templateName: "module/model.go.tpl",
+        destPath: path.join(moduleDir, `${moduleName}.model.go`),
       },
-    },
-    {
-      templateName: "module/repository.go.tpl",
-      destPath: path.join(moduleDir, `${moduleName}.repository.go`),
-      variables: {
-        MODULE_NAME: moduleName,
-        MODULE_NAME_UPPER: moduleNameUpper,
+      {
+        templateName: "module/repository.go.tpl",
+        destPath: path.join(moduleDir, `${moduleName}.repository.go`),
       },
-    },
-    {
-      templateName: "module/service.go.tpl",
-      destPath: path.join(moduleDir, `${moduleName}.service.go`),
-      variables: {
-        MODULE_NAME: moduleName,
-        MODULE_NAME_UPPER: moduleNameUpper,
+      {
+        templateName: "module/service.go.tpl",
+        destPath: path.join(moduleDir, `${moduleName}.service.go`),
       },
-    },
-    {
-      templateName: "module/use-cases.go.tpl",
-      destPath: path.join(moduleDir, `${moduleName}.use-cases.go`),
-      variables: {
-        MODULE_NAME: moduleName,
-        MODULE_NAME_UPPER: moduleNameUpper,
+      {
+        templateName: "module/use-cases.go.tpl",
+        destPath: path.join(moduleDir, `${moduleName}.use-cases.go`),
       },
-    },
-  ]);
+    ],
+    language,
+    {
+      MODULE_NAME: moduleName,
+      MODULE_NAME_UPPER: moduleNameUpper,
+    }
+  );
 
   // Register module in main.go
   const mainGo = path.join(serviceDir, mainGoPath);

@@ -1,0 +1,20 @@
+{
+  "service": {
+    "directories": ["cmd", "internal/config", "diagrams"],
+    "files": [
+      {
+        "templateName": "service/env.tpl",
+        "destPath": ".env"
+      },
+      {
+        "templateName": "service/config.go.tpl",
+        "destPath": "internal/config/config.go"
+      },
+      {
+        "templateName": "service/main.go.tpl",
+        "destPath": "cmd/main.go"
+      }
+    ]
+  },
+  "module": {}
+}

@@ -36,11 +36,11 @@ export function writeMultipleTemplates(
   templates: Array<{
     templateName: string;
     destPath: string;
-    variables: Record<string, string>;
   }>,
-  language: string = "go"
+  language: string = "go",
+  variables: Record<string, string>
 ) {
-  for (const { templateName, destPath, variables } of templates) {
+  for (const { templateName, destPath } of templates) {
     writeTemplate(templateName, destPath, variables, language);
   }
 }
