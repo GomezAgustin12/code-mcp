@@ -8,7 +8,8 @@
     "create-service": "node dist/create-service.js",
     "build": "tsc",
     "dev": "npx -y tsx src/mcp.ts",
-    "dev:create-service": "npx -y tsx src/create-service.ts"
+    "dev:create-service": "npx -y tsx src/create-service.ts",
+    "dev:create-module": "npx -y tsx src/create-module.ts"
   },
   "keywords": [],
   "author": "",

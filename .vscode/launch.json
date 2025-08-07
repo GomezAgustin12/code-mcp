@@ -1,0 +1,36 @@
+// DEVELOPMENT
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Program",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "cd server/api && npm run dev:charles",
+      "skipFiles": ["<node_internals>/**"],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Create Service",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev:create-service",
+      "skipFiles": ["<node_internals>/**"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "Create Module",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev:create-module",
+      "skipFiles": ["<node_internals>/**"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "NODE_ENV": "test"
+      }
+    }
+  ]
+}

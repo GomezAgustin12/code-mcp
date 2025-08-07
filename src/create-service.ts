@@ -2,33 +2,41 @@ import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
 import { writeMultipleTemplates, mkdirs } from "./template-utils";
+import { LogService } from "./utils/log-service";
 
 export async function createService({
   serviceName,
   cwd = process.cwd(),
   language = "go",
+  test = false,
 }: {
   serviceName: string;
   cwd?: string;
   language?: string;
+  test?: boolean;
 }) {
-  function capitalize(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  const logger = new LogService(test);
+
+  if (!cwd) {
+    //use current working directory
+    cwd = process.cwd();
   }
 
   const serviceDir = path.join(cwd, serviceName);
   fs.mkdirSync(serviceDir);
   process.chdir(serviceDir);
 
-  const { directories, files } = await import(
-    `./language-config/${language}.json`
-  );
+  const {
+    service: { directories, files },
+  } = await import(`./language-config/${language}.json`);
 
   // Create directories
+  logger.info("Creating directories...");
   mkdirs(directories);
 
   // Generate files from templates
-  writeMultipleTemplates(files.service, language, {
+  logger.info("Creating files...");
+  writeMultipleTemplates(files, language, {
     SERVICE_NAME: serviceName,
   });
 
@@ -51,11 +59,13 @@ export async function createService({
   // process.env.PATH = `${process.env.GOPATH || ""}/bin:${process.env.PATH}`;
 
   // Copy new-module scripts
+  logger.info("Copying new-module scripts...");
   fs.mkdirSync("scripts", { recursive: true });
   execSync("cp -R ../scripts/new-module scripts/");
   execSync("cp -R ../scripts/new-module.sh ./");
 
   // Git
+  logger.info("Initializing git repository...");
   execSync("git init", { stdio: "inherit" });
 
   // Swagger docs
@@ -71,6 +81,7 @@ export async function createService({
 
   // Create DB (local or Docker)
   try {
+    logger.info("Creating database...");
     execSync(`createdb ${serviceName}`, { stdio: "inherit" });
   } catch {
     // Try Docker
@@ -81,9 +92,9 @@ export async function createService({
         .toString()
         .trim();
       if (!container) {
-        // console.error(
-        //   "Error: No running postgres Docker container found. Please start your postgres container."
-        // );
+        logger.error(
+          "Error: No running postgres Docker container found. Please start your postgres container."
+        );
       } else {
         try {
           execSync(
@@ -94,10 +105,13 @@ export async function createService({
         }
       }
     } catch {
-      console.warn("Could not create database locally or in Docker.");
+      logger.warn("Could not create database locally or in Docker.");
     }
   }
 
   // Final steps
   // execSync("go mod tidy", { stdio: "inherit" });
 }
+
+// Example usage:
+createService({ serviceName: "test", language: "go", test: true });

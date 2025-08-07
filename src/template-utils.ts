@@ -24,6 +24,7 @@ export function writeTemplate(
 ) {
   const templatePath = path.join(
     __dirname,
+    "templates",
     `templates-${language}`,
     templateName
   );
