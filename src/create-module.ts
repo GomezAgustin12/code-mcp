@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
-import { writeMultipleTemplates } from "./template-utils";
-import { LogService } from "./utils/log-service";
+import { writeMultipleTemplates } from "./template-utils.js";
+import { LogService } from "./utils/log-service.js";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -70,10 +70,10 @@ export async function createModule({
 }
 
 // Example usage:
-createModule({
-  moduleName: "user",
-  serviceDir: `${process.cwd()}/test`,
-  mainGoPath: "cmd/main.go",
-  language: "go",
-  test: true,
-});
+// createModule({
+//   moduleName: "user",
+//   serviceDir: `${process.cwd()}/test`,
+//   mainGoPath: "cmd/main.go",
+//   language: "go",
+//   test: true,
+// });

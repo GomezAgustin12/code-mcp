@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { createService } from "./create-service";
-import { createModule } from "./create-module";
+import { createService } from "./create-service.js";
+import { createModule } from "./create-module.js";
 
 const server = new McpServer({
   name: "My MCP Server",
@@ -79,5 +79,5 @@ server.tool(
 const transport = new StdioServerTransport();
 await server.connect(transport);
 
-export * from "./create-service";
-export * from "./create-module";
+export * from "./create-service.js";
+export * from "./create-module.js";

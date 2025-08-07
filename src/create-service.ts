@@ -1,8 +1,8 @@
 import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
-import { writeMultipleTemplates, mkdirs } from "./template-utils";
-import { LogService } from "./utils/log-service";
+import { writeMultipleTemplates, mkdirs } from "./template-utils.js";
+import { LogService } from "./utils/log-service.js";
 
 export async function createService({
   serviceName,
@@ -114,4 +114,4 @@ export async function createService({
 }
 
 // Example usage:
-createService({ serviceName: "test", language: "go", test: true });
+// createService({ serviceName: "test", language: "go", test: true });
