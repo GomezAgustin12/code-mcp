@@ -3,3 +3,4 @@ mc-core
 node_modules
 dist
 product
+test/
