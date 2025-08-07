@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { writeMultipleTemplates } from "./template-utils";
+import { writeMultipleTemplates, generateFromMetadata } from "./template-utils";
 import { LogService } from "./utils/log-service";
 
 function capitalize(str: string) {
@@ -27,33 +27,64 @@ export async function createModule({
   fs.mkdirSync(moduleDir, { recursive: true });
   const moduleNameUpper = capitalize(moduleName);
 
-  // Generate Go files from templates (now organized in subfolders)
-  logger.info("Generating module files...");
-  writeMultipleTemplates(
-    [
-      {
-        templateName: "module/model.go.tpl",
-        destPath: path.join(moduleDir, `${moduleName}.model.go`),
-      },
-      {
-        templateName: "module/repository.go.tpl",
-        destPath: path.join(moduleDir, `${moduleName}.repository.go`),
-      },
-      {
-        templateName: "module/service.go.tpl",
-        destPath: path.join(moduleDir, `${moduleName}.service.go`),
-      },
-      {
-        templateName: "module/use-cases.go.tpl",
-        destPath: path.join(moduleDir, `${moduleName}.use-cases.go`),
-      },
-    ],
-    language,
-    {
-      MODULE_NAME: moduleName,
-      MODULE_NAME_UPPER: moduleNameUpper,
+  // Check if we should use metadata-driven approach
+  try {
+    const config = await import(`./language-config/${language}.json`);
+    
+    if (config.useMetadata) {
+      logger.info("Using metadata-driven module generation...");
+      
+      // Change to service directory for relative path resolution
+      const originalCwd = process.cwd();
+      process.chdir(serviceDir);
+      
+      const result = generateFromMetadata('module', language, {
+        MODULE_NAME: moduleName,
+        MODULE_NAME_UPPER: moduleNameUpper,
+        MODULE_PATH: `internal/${moduleName}`,
+      });
+      
+      process.chdir(originalCwd);
+      logger.info(`Generated ${result.files.length} module files`);
+    } else {
+      // Fallback to legacy hardcoded approach
+      logger.info("Using legacy module generation...");
+      generateLegacyModuleFiles();
     }
-  );
+  } catch (error) {
+    logger.warn("Config file not found, using legacy approach");
+    generateLegacyModuleFiles();
+  }
+  
+  function generateLegacyModuleFiles() {
+    // Generate Go files from templates (now organized in subfolders)
+    logger.info("Generating module files...");
+    writeMultipleTemplates(
+      [
+        {
+          templateName: "module/model.go.tpl",
+          destPath: path.join(moduleDir, `${moduleName}.model.go`),
+        },
+        {
+          templateName: "module/repository.go.tpl",
+          destPath: path.join(moduleDir, `${moduleName}.repository.go`),
+        },
+        {
+          templateName: "module/service.go.tpl",
+          destPath: path.join(moduleDir, `${moduleName}.service.go`),
+        },
+        {
+          templateName: "module/use-cases.go.tpl",
+          destPath: path.join(moduleDir, `${moduleName}.use-cases.go`),
+        },
+      ],
+      language,
+      {
+        MODULE_NAME: moduleName,
+        MODULE_NAME_UPPER: moduleNameUpper,
+      }
+    );
+  }
 
   // Register module in main.go
   logger.info("Updating main.go to register the new module...");

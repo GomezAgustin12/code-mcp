@@ -1,4 +1,5 @@
 {
+  "useMetadata": true,
   "service": {
     "directories": ["cmd", "internal/config", "diagrams"],
     "files": [
