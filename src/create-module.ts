@@ -70,10 +70,10 @@ export async function createModule({
 }
 
 // Example usage:
-createModule({
-  moduleName: "user",
-  serviceDir: `${process.cwd()}/test`,
-  mainGoPath: "cmd/main.go",
-  language: "go",
-  test: true,
-});
+// createModule({
+//   moduleName: "user",
+//   serviceDir: `${process.cwd()}/test`,
+//   mainGoPath: "cmd/main.go",
+//   language: "go",
+//   test: true,
+// });

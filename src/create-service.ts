@@ -114,4 +114,4 @@ export async function createService({
 }
 
 // Example usage:
-createService({ serviceName: "test", language: "go", test: true });
+// createService({ serviceName: "test", language: "go", test: true });
