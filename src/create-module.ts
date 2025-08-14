@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { writeMultipleTemplates } from "./template-utils";
+import { writeMultipleTemplates } from "./utils/template-service";
 import { LogService } from "./utils/log-service";
 
 function capitalize(str: string) {

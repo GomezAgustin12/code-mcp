@@ -3,7 +3,7 @@
     "directories": [],
     "files": [
       {
-        "templateName": "service/env.tpl",
+        "templateName": "service/.env.tpl",
         "destPath": ".env"
       },
       {
@@ -11,23 +11,23 @@
         "destPath": ".dockerignore"
       },
       {
-        "templateName": "config.py.tpl",
+        "templateName": "service/config.py.tpl",
         "destPath": "config.py"
       },
       {
-        "templateName": "database.py.tpl",
+        "templateName": "service/database.py.tpl",
         "destPath": "database.py"
       },
       {
-        "templateName": "docker-compose.yml.tpl",
+        "templateName": "service/docker-compose.yml.tpl",
         "destPath": "docker-compose.yml"
       },
       {
-        "templateName": "Dockerfile.tpl",
+        "templateName": "service/Dockerfile.tpl",
         "destPath": "Dockerfile"
       },
       {
-        "templateName": "main.py.tpl",
+        "templateName": "service/main.py.tpl",
         "destPath": "main.py"
       }
     ]

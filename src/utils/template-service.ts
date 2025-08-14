@@ -23,7 +23,7 @@ export function writeTemplate(
   language: string = "go"
 ) {
   const templatePath = path.join(
-    __dirname,
+    path.dirname(__dirname),
     "templates",
     `templates-${language}`,
     templateName
@@ -47,6 +47,7 @@ export function writeMultipleTemplates(
 }
 
 export function mkdirs(dirs: string[]) {
+  if (dirs.length === 0) return;
   for (const dir of dirs) {
     fs.mkdirSync(dir, { recursive: true });
   }

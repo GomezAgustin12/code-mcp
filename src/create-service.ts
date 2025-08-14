@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
-import { writeMultipleTemplates, mkdirs } from "./template-utils";
+import { writeMultipleTemplates, mkdirs } from "./utils/template-service";
 import { LogService } from "./utils/log-service";
 
 export async function createService({
@@ -113,5 +113,8 @@ export async function createService({
   // execSync("go mod tidy", { stdio: "inherit" });
 }
 
-// Example usage:
+// Example usage GO:
 // createService({ serviceName: "test", language: "go", test: true });
+
+// Example usage python:
+createService({ serviceName: "test-python", language: "py", test: true });

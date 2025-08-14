@@ -18,7 +18,7 @@
     "src/create-module.ts",
     "src/create-service.ts",
     "src/mcp.ts",
-    "src/template-utils.ts",
+    "src/utils/template-service.ts",
     "src/*",
     "src/**/*.test.ts",
     "tests/**/*.test.ts",
