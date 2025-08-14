@@ -10,7 +10,8 @@
     "outDir": "dist",
     "rootDir": ".",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "types": ["vitest/globals", "node"]
   },
   "include": [
     "./*.ts",
@@ -18,7 +19,10 @@
     "src/create-service.ts",
     "src/mcp.ts",
     "src/template-utils.ts",
-    "src/*"
+    "src/*",
+    "src/**/*.test.ts",
+    "tests/**/*.test.ts",
+    "test/**/*.test.ts"
   ],
   "exclude": ["node_modules", "dist", "*.js"]
 }
