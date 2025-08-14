@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import { TemplateResolver } from "./template-metadata";
 
 // Polyfill __dirname for ESM compatibility
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -22,12 +23,25 @@ export function writeTemplate(
   variables: Record<string, string>,
   language: string = "go"
 ) {
-  const templatePath = path.join(
-    __dirname,
-    "templates",
-    `templates-${language}`,
-    templateName
-  );
+  let templatePath: string;
+  
+  // Handle shared templates
+  if (templateName.startsWith('shared/')) {
+    templatePath = path.join(
+      __dirname,
+      "templates",
+      templateName
+    );
+  } else {
+    // Handle language-specific templates
+    templatePath = path.join(
+      __dirname,
+      "templates",
+      `templates-${language}`,
+      templateName
+    );
+  }
+  
   const rendered = renderTemplate(templatePath, variables);
   fs.mkdirSync(path.dirname(destPath), { recursive: true });
   fs.writeFileSync(destPath, rendered);
@@ -50,4 +64,39 @@ export function mkdirs(dirs: string[]) {
   for (const dir of dirs) {
     fs.mkdirSync(dir, { recursive: true });
   }
+}
+
+/**
+ * Generate files using the new metadata-driven approach
+ */
+export function generateFromMetadata(
+  category: 'service' | 'module',
+  language: string,
+  variables: Record<string, string>
+) {
+  const resolver = new TemplateResolver();
+  
+  // Get directories to create
+  const directories = resolver.getDirectoriesForLanguage(language);
+  mkdirs(directories);
+  
+  // Get templates to generate
+  const templates = resolver.getTemplatesForLanguage(category, language);
+  
+  // Process each template
+  for (const template of templates) {
+    // Resolve variables in destination path
+    let destPath = template.destPath;
+    for (const [key, value] of Object.entries(variables)) {
+      const re = new RegExp(`{{${key}}}`, "g");
+      destPath = destPath.replace(re, value);
+    }
+    
+    writeTemplate(template.templateName, destPath, variables, language);
+  }
+  
+  return {
+    directories,
+    files: templates.map(t => t.destPath)
+  };
 }

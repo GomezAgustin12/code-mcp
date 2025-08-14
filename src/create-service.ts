@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "fs";
 import { execSync } from "child_process";
-import { writeMultipleTemplates, mkdirs } from "./template-utils";
+import { writeMultipleTemplates, mkdirs, generateFromMetadata } from "./template-utils";
 import { LogService } from "./utils/log-service";
 
 export async function createService({
@@ -26,19 +26,33 @@ export async function createService({
   fs.mkdirSync(serviceDir);
   process.chdir(serviceDir);
 
-  const {
-    service: { directories, files },
-  } = await import(`./language-config/${language}.json`);
+  const config = await import(`./language-config/${language}.json`);
+  
+  // Use new metadata-driven approach if enabled
+  if (config.useMetadata) {
+    logger.info("Using metadata-driven template generation...");
+    
+    const result = generateFromMetadata('service', language, {
+      SERVICE_NAME: serviceName,
+    });
+    
+    logger.info(`Created ${result.directories.length} directories and ${result.files.length} files`);
+  } else {
+    // Fallback to legacy approach
+    const {
+      service: { directories, files },
+    } = config;
 
-  // Create directories
-  logger.info("Creating directories...");
-  mkdirs(directories);
+    // Create directories
+    logger.info("Creating directories...");
+    mkdirs(directories);
 
-  // Generate files from templates
-  logger.info("Creating files...");
-  writeMultipleTemplates(files, language, {
-    SERVICE_NAME: serviceName,
-  });
+    // Generate files from templates
+    logger.info("Creating files...");
+    writeMultipleTemplates(files, language, {
+      SERVICE_NAME: serviceName,
+    });
+  }
 
   // go.mod and dependencies
   // execSync(`go mod init ${serviceName}`, { stdio: "inherit" });
@@ -60,9 +74,13 @@ export async function createService({
 
   // Copy new-module scripts
   logger.info("Copying new-module scripts...");
-  fs.mkdirSync("scripts", { recursive: true });
-  execSync("cp -R ../scripts/new-module scripts/");
-  execSync("cp -R ../scripts/new-module.sh ./");
+  try {
+    fs.mkdirSync("scripts", { recursive: true });
+    execSync("cp -R ../scripts/new-module scripts/");
+    execSync("cp -R ../scripts/new-module.sh ./");
+  } catch (error) {
+    logger.warn("Could not copy new-module scripts (scripts directory may not exist)");
+  }
 
   // Git
   logger.info("Initializing git repository...");
